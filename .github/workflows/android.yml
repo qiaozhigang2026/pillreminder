@@ -20,9 +20,22 @@ jobs:
           pip3 install cython==0.29.37 buildozer
       - name: Build APK
         run: buildozer -v android debug 2>&1 | tee buildozer_build.log
+      - name: Locate APK (debug)
+        id: locate_apk
+        run: |
+          APK_PATH=$(ls -1 .buildozer/**/build/outputs/apk/debug/*.apk 2>/dev/null | head -n1)
+          if [ -z "$APK_PATH" ]; then
+            APK_PATH=$(find . -name "*.apk" -path "*/debug/*" 2>/dev/null | head -n1)
+          fi
+          if [ -z "$APK_PATH" ]; then
+            APK_PATH=$(find . -name "*.apk" 2>/dev/null | head -n1)
+          fi
+          echo "APK_PATH=$APK_PATH"
+          echo "apk_path=$APK_PATH" >> $GITHUB_OUTPUT
+          ls -la "$APK_PATH" || true
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: pill-reminder-app
-          path: .buildozer/android/platform/build-arm64-v8a/dists/pillreminder/build/outputs/apk/debug/*.apk
+          path: ${{ steps.locate_apk.outputs.apk_path }}
           if-no-files-found: warn
