@@ -1,0 +1,377 @@
+# -*- coding: utf-8 -*-
+#:kivy 2.0
+
+# ==================== 主屏幕 ====================
+<HomeScreen>:
+    name: "home"
+    BoxLayout:
+        orientation: "vertical"
+        canvas.before:
+            Color:
+                rgba: app.theme_bg
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        # 顶部栏
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint_y: None
+            height: "72dp"
+            padding: ["16dp", "12dp"]
+            canvas.before:
+                Color:
+                    rgba: app.theme_primary
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            Label:
+                text: "[b]用药提醒[/b]"
+                markup: True
+                color: 1,1,1,1
+                font_size: "32sp"
+                halign: "left"
+                valign: "middle"
+            Button:
+                text: "测试提醒"
+                size_hint: None, None
+                size: "120dp", "52dp"
+                font_size: "20sp"
+                background_normal: ""
+                background_color: app.theme_accent
+                color: 0.1,0.1,0.1,1
+                on_release: app.fire_test_reminder()
+        # 列表
+        ScrollView:
+            BoxLayout:
+                id: list_layout
+                orientation: "vertical"
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: "10dp"
+                padding: ["14dp", "14dp"]
+                canvas.before:
+                    Color:
+                        rgba: app.theme_bg
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+        # 底部添加按钮
+        BoxLayout:
+            size_hint_y: None
+            height: "88dp"
+            padding: ["20dp", "14dp"]
+            canvas.before:
+                Color:
+                    rgba: 1,1,1,1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            Button:
+                text: "[b]+ 添加药品[/b]"
+                markup: True
+                font_size: "28sp"
+                background_normal: ""
+                background_color: app.theme_primary
+                color: 1,1,1,1
+                on_release: app.open_add_medicine()
+
+
+# ==================== 药品库屏幕 ====================
+<MedicineScreen>:
+    name: "medicines"
+    BoxLayout:
+        orientation: "vertical"
+        canvas.before:
+            Color:
+                rgba: app.theme_bg
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint_y: None
+            height: "72dp"
+            padding: ["16dp", "12dp"]
+            canvas.before:
+                Color:
+                    rgba: app.theme_primary
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            Label:
+                text: "[b]我的药品[/b]"
+                markup: True
+                color: 1,1,1,1
+                font_size: "32sp"
+                halign: "left"
+            Button:
+                text: "+"
+                size_hint: None, None
+                size: "56dp", "56dp"
+                font_size: "36sp"
+                background_normal: ""
+                background_color: app.theme_accent
+                color: 0.1,0.1,0.1,1
+                on_release: app.open_add_medicine()
+        ScrollView:
+            BoxLayout:
+                id: med_layout
+                orientation: "vertical"
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: "10dp"
+                padding: ["14dp", "14dp"]
+
+
+# ==================== 记录屏幕 ====================
+<LogScreen>:
+    name: "logs"
+    BoxLayout:
+        orientation: "vertical"
+        canvas.before:
+            Color:
+                rgba: app.theme_bg
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint_y: None
+            height: "72dp"
+            padding: ["16dp", "12dp"]
+            canvas.before:
+                Color:
+                    rgba: app.theme_primary
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            Label:
+                text: "[b]服药记录[/b]"
+                markup: True
+                color: 1,1,1,1
+                font_size: "32sp"
+                halign: "left"
+        ScrollView:
+            BoxLayout:
+                id: log_layout
+                orientation: "vertical"
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: "4dp"
+                padding: ["14dp", "14dp"]
+
+
+# ==================== 设置屏幕 ====================
+<SettingsScreen>:
+    name: "settings"
+    BoxLayout:
+        orientation: "vertical"
+        canvas.before:
+            Color:
+                rgba: app.theme_bg
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint_y: None
+            height: "72dp"
+            padding: ["16dp", "12dp"]
+            canvas.before:
+                Color:
+                    rgba: app.theme_primary
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            Label:
+                text: "[b]设置[/b]"
+                markup: True
+                color: 1,1,1,1
+                font_size: "32sp"
+                halign: "left"
+        ScrollView:
+            BoxLayout:
+                orientation: "vertical"
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: "16dp"
+                padding: ["20dp", "20dp"]
+                SettingsRow:
+                    label_text: "字体大小"
+                    value_text: app.font_scale_label
+                SettingsRow:
+                    label_text: "声音提醒"
+                    value_text: "开启"
+                SettingsRow:
+                    label_text: "振动提醒"
+                    value_text: "开启"
+                SettingsRow:
+                    label_text: "语音播报"
+                    value_text: "中文"
+                SettingsRow:
+                    label_text: "提醒持续时间"
+                    value_text: "60 秒"
+                SettingsRow:
+                    label_text: "关于"
+                    value_text: "用药提醒 v1.0"
+
+
+<SettingsRow@BoxLayout>:
+    label_text: ""
+    value_text: ""
+    orientation: "horizontal"
+    size_hint_y: None
+    height: "72dp"
+    padding: ["8dp", "4dp"]
+    canvas.before:
+        Color:
+            rgba: 1,1,1,1
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [12,]
+    Label:
+        text: root.label_text
+        color: app.theme_text
+        font_size: "24sp"
+        halign: "left"
+        valign: "middle"
+        text_size: self.width, None
+        padding: ["16dp", 0]
+    Label:
+        text: root.value_text
+        color: app.theme_text_sub
+        font_size: "22sp"
+        halign: "right"
+        valign: "middle"
+        padding: [0, "16dp"]
+
+
+# ==================== 提醒弹窗 ====================
+<ReminderPopup>:
+    FloatLayout:
+        id: popup_root
+        size_hint: 1, 1
+        opacity: 0
+        disabled: True
+        canvas.before:
+            Color:
+                rgba: 0,0,0,0.86
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        BoxLayout:
+            orientation: "vertical"
+            padding: ["24dp", "40dp"]
+            spacing: "20dp"
+            size_hint: 1, 1
+            # 顶部：闹钟图标 + 标题
+            BoxLayout:
+                orientation: "horizontal"
+                size_hint_y: None
+                height: "60dp"
+                spacing: "12dp"
+                Label:
+                    text: "\u23F0"
+                    font_size: "44sp"
+                    size_hint_x: None
+                    width: "60dp"
+                Label:
+                    id: pop_name
+                    text: "药品"
+                    markup: True
+                    color: 1,1,1,1
+                    font_size: "40sp"
+                    halign: "left"
+                    valign: "middle"
+            # 药品图片大图
+            Image:
+                id: pop_img
+                size_hint: 1, 0.4
+                allow_stretch: True
+                keep_ratio: True
+            # 用量
+            Label:
+                id: pop_dose
+                text: "用量：1粒"
+                color: 1,1,1,1
+                font_size: "36sp"
+                halign: "center"
+                size_hint_y: None
+                height: "56dp"
+            Label:
+                id: pop_time
+                text: "08:00"
+                color: app.theme_accent
+                font_size: "60sp"
+                bold: True
+                halign: "center"
+                size_hint_y: None
+                height: "90dp"
+            # 状态提示
+            Label:
+                text: "正在响铃、振动、语音播报..."
+                color: 0.9,0.9,0.9,1
+                font_size: "22sp"
+                halign: "center"
+                size_hint_y: None
+                height: "40dp"
+            Widget:
+                size_hint_y: 1
+            # 操作按钮
+            BoxLayout:
+                orientation: "vertical"
+                size_hint_y: None
+                height: "160dp"
+                spacing: "16dp"
+                Button:
+                    text: "[b]已服用[/b]"
+                    markup: True
+                    font_size: "38sp"
+                    background_normal: ""
+                    background_color: app.theme_green
+                    color: 1,1,1,1
+                    size_hint_y: None
+                    height: "80dp"
+                    on_release: root.on_taken()
+                Button:
+                    text: "稍后提醒 10 分钟"
+                    font_size: "26sp"
+                    background_normal: ""
+                    background_color: app.theme_primary
+                    color: 1,1,1,1
+                    size_hint_y: None
+                    height: "64dp"
+                    on_release: root.on_snooze()
+
+
+<CardLayout@BoxLayout>:
+    canvas.before:
+        Color:
+            rgba: 1,1,1,1
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [14,]
+
+
+<BigButton>:
+    background_normal: ""
+    background_color: app.theme_primary
+    color: 1,1,1,1
+    bold: True
+    size_hint_y: None
+    height: "64dp"
+
+
+<BigLabel>:
+    text_size: self.width, None
+
+
+<MedicineForm>:
+    canvas.before:
+        Color:
+            rgba: 1,1,1,1
+        Rectangle:
+            pos: self.pos
+            size: self.size
